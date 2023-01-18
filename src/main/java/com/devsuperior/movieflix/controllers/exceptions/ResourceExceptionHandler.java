@@ -1,7 +1,6 @@
 package com.devsuperior.movieflix.controllers.exceptions;
 
 
-import com.devsuperior.movieflix.services.exceptions.ForbiddenException;
 import com.devsuperior.movieflix.services.exceptions.ResourceNotFoundException;
 import com.devsuperior.movieflix.services.exceptions.UnauthorizedException;
 import org.springframework.http.HttpStatus;
@@ -45,22 +44,10 @@ public class ResourceExceptionHandler {
         return ResponseEntity.status(status).body(err);
     }
 
-    @ExceptionHandler(ForbiddenException.class)
-    public ResponseEntity<OauthCustomError> forbidden(ForbiddenException e, HttpServletRequest request){
-        HttpStatus status = HttpStatus.FORBIDDEN;
-        OauthCustomError oauthCustomError = new OauthCustomError();
-        oauthCustomError.setError("Forbidden");
-        oauthCustomError.setErrorDescription(e.getMessage());
-        return ResponseEntity.status(status).body(oauthCustomError);
-    }
-
     @ExceptionHandler(UnauthorizedException.class)
-    public ResponseEntity<OauthCustomError> unauthorized(UnauthorizedException e, HttpServletRequest request){
-        HttpStatus status = HttpStatus.UNAUTHORIZED;
-        OauthCustomError oauthCustomError = new OauthCustomError();
-        oauthCustomError.setError("Unauthorized");
-        oauthCustomError.setErrorDescription(e.getMessage());
-        return ResponseEntity.status(status).body(oauthCustomError);
+    public ResponseEntity<OauthCustomError> unauthorized(UnauthorizedException e){
+        OauthCustomError oauthCustomError = new OauthCustomError("Unautorized", e.getMessage());
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(oauthCustomError);
     }
 
 
